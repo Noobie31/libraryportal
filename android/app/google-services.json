@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "452983052957",
+    "project_id": "libraryportal-aae1b",
+    "storage_bucket": "libraryportal-aae1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452983052957:android:93a6305bdddb8e534ed274",
+        "android_client_info": {
+          "package_name": "com.example.libraryportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452983052957-hf2ld6ai4eikq74davo6letbjsia1pd0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnZgq8zF-Jls8ZEkpZg9WcZUHHrRBa1Is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452983052957-hf2ld6ai4eikq74davo6letbjsia1pd0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
