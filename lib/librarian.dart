@@ -12,8 +12,7 @@ class Librarian extends StatefulWidget {
   State<Librarian> createState() => _Librariantate();
 }
 
-class _Librariantate extends State<Librarian>
-    with AutomaticKeepAliveClientMixin {
+class _Librariantate extends State<Librarian> {
   @override
   bool get wantKeepAlive => true;
   @override
@@ -22,23 +21,16 @@ class _Librariantate extends State<Librarian>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 0, 3, 44),
-          bottom: TabBar(
-            indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), // Creates border
-                color: Color.fromARGB(
-                    255, 118, 164, 170)), //Change background color from her
-            tabs: [
-              Tab(icon: Icon(Icons.book)),
-              Tab(icon: Icon(Icons.people)),
-            ],
-          ),
+          bottom: TabBar(tabs: [
+            Tab(icon: Icon(Icons.book)),
+            Tab(icon: Icon(Icons.people)),
+          ]),
           title: Text('Librarian'),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            (Libbook()),
-            (Libstudent()),
+            Libbook(),
+            Libstudent(),
           ],
         ),
       ),
