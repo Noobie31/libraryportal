@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => Librarian(),
             ),
           );
-        } else {
+        } else if (documentSnapshot.get('rool') == "Student") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

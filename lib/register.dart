@@ -23,7 +23,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController passwordController = new TextEditingController();
   final TextEditingController confirmpassController =
       new TextEditingController();
-  final TextEditingController name = new TextEditingController();
+  final TextEditingController nameController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
@@ -69,6 +69,37 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(
                           height: 50,
+                        ),
+                        TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Username',
+                            enabled: true,
+                            contentPadding: const EdgeInsets.only(
+                                left: 14.0, bottom: 8.0, top: 8.0),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.white),
+                              borderRadius: new BorderRadius.circular(20),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.length == 0) {
+                              return "Email cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onChanged: (value) {},
+                          keyboardType: TextInputType.name,
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                         TextFormField(
                           controller: emailController,
@@ -287,7 +318,11 @@ class _RegisterState extends State<Register> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'email': emailController.text, 'rool': rool});
+    ref.doc(user!.uid).set({
+      'email': emailController.text,
+      'rool': rool,
+      'name': nameController.text
+    });
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Admin()));
   }

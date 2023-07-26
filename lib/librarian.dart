@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'login.dart';
 import 'libbook.dart';
+import 'libstudent.dart';
 
 class Librarian extends StatefulWidget {
   const Librarian({super.key});
@@ -11,7 +12,10 @@ class Librarian extends StatefulWidget {
   State<Librarian> createState() => _Librariantate();
 }
 
-class _Librariantate extends State<Librarian> {
+class _Librariantate extends State<Librarian>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -34,7 +38,7 @@ class _Librariantate extends State<Librarian> {
         body: TabBarView(
           children: [
             (Libbook()),
-            Icon(Icons.directions_transit, size: 350),
+            (Libstudent()),
           ],
         ),
       ),
