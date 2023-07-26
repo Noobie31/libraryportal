@@ -1,40 +1,40 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:libraryportal/libbook.dart';
 
 import 'login.dart';
-import 'register.dart';
+import 'libbook.dart';
 
-class Admin extends StatefulWidget {
-  const Admin({super.key});
+class Librarian extends StatefulWidget {
+  const Librarian({super.key});
 
   @override
-  State<Admin> createState() => _adminState();
+  State<Librarian> createState() => _Librariantate();
 }
 
-class _adminState extends State<Admin> {
+class _Librariantate extends State<Librarian> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 4, 131, 163),
+          backgroundColor: Color.fromARGB(255, 0, 3, 44),
           bottom: TabBar(
             indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(10), // Creates border
-                color: Colors.greenAccent), //Change background color from her
+                color: Color.fromARGB(
+                    255, 118, 164, 170)), //Change background color from her
             tabs: [
-              Tab(icon: Icon(Icons.admin_panel_settings)),
-              Tab(icon: Icon(Icons.book_sharp)),
+              Tab(icon: Icon(Icons.book)),
+              Tab(icon: Icon(Icons.people)),
             ],
           ),
-          title: Text('Admin'),
+          title: Text('Librarian'),
         ),
         body: TabBarView(
           children: [
-            Register(),
-            Libbook(),
+            (Libbook()),
+            Icon(Icons.directions_transit, size: 350),
           ],
         ),
       ),

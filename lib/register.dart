@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Colors.amberAccent,
+              color: Color.fromARGB(255, 0, 0, 0),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
@@ -195,7 +195,7 @@ class _RegisterState extends State<Register> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Rool : ",
+                              "Role : ",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

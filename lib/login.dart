@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:libraryportal/admin.dart';
 import 'student.dart';
-import 'teacher.dart';
+import 'librarian.dart';
 import 'register.dart';
+import 'package:libraryportal/utils/color_utils.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,9 +27,14 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Color.fromARGB(255, 0, 43, 51),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                hexStringToColor("CB2B93"),
+                hexStringToColor("9546C4"),
+                hexStringToColor("5E61F4")
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
               child: Center(
                 child: Container(
                   margin: EdgeInsets.all(12),
@@ -50,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 70,
                         ),
                         TextFormField(
                           controller: emailController,
@@ -197,11 +203,11 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => Admin(),
             ),
           );
-        } else if (documentSnapshot.get('rool') == "Teacher") {
+        } else if (documentSnapshot.get('rool') == "Librarian") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Teacher(),
+              builder: (context) => Librarian(),
             ),
           );
         } else {
