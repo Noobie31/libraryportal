@@ -3,31 +3,77 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Libbook extends StatefulWidget {
   const Libbook({super.key});
+  @override
+  _LibbookState createState() => _LibbookState();
+}
 
+class _LibbookState extends State<Libbook> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<Libbook> {
-  final ScrollController list1Controller = ScrollController();
-  final ScrollController list2Controller = ScrollController();
-  final ScrollController list3Controller = ScrollController();
-  final ScrollController list4Controller = ScrollController();
-  final ScrollController list5Controller = ScrollController();
-  final ScrollController list6Controller = ScrollController();
-  final ScrollController list7Controller = ScrollController();
-  final ScrollController list8Controller = ScrollController();
-  final ScrollController list9Controller = ScrollController();
-  final ScrollController list10Controller = ScrollController();
-  final ScrollController list11Controller = ScrollController();
-  final ScrollController list12Controller = ScrollController();
-  final ScrollController list13Controller = ScrollController();
+class _MyHomePageState extends State<MyHomePage> {
+  void _showFloatingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: 430, // Set a custom width
+            height: 400, // Set a custom height
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Book Name",
+                  ),
+                ),
+                SizedBox(
+                    height: 16), // Add some spacing between the text fields
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Description",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Book List')),
+      appBar: AppBar(
+        title: Text("Book List"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showFloatingDialog(context);
+        },
+        child: Icon(Icons.add),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('books').snapshots(),
         builder: (context, snapshot) {
