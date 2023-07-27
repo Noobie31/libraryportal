@@ -94,6 +94,26 @@ class _StudentState extends State<Student> {
                 color: Colors.white,
               ),
             ),
+            SizedBox(height: 73),
+            Text(
+              "The Great Gatsby                        Due 2 days more...",
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              "The Catcher in the Rye              Due 4 days more...",
+              style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
       ),
