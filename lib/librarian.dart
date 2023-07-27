@@ -29,7 +29,7 @@ class _Librariantate extends State<Librarian> {
         ),
         body: const TabBarView(
           children: [
-            Libstudent(),
+            Libbook(),
             Libstudent(),
           ],
         ),
