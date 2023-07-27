@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Libstudent extends StatefulWidget {
   const Libstudent({super.key});
@@ -8,64 +9,59 @@ class Libstudent extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<Libstudent> {
-  bool _isAlwaysShown = true;
-
-  bool _showTrackOnHover = false;
+  final ScrollController list1Controller = ScrollController();
+  final ScrollController list2Controller = ScrollController();
+  final ScrollController list3Controller = ScrollController();
+  final ScrollController list4Controller = ScrollController();
+  final ScrollController list5Controller = ScrollController();
+  final ScrollController list6Controller = ScrollController();
+  final ScrollController list7Controller = ScrollController();
+  final ScrollController list8Controller = ScrollController();
+  final ScrollController list9Controller = ScrollController();
+  final ScrollController list10Controller = ScrollController();
+  final ScrollController list11Controller = ScrollController();
+  final ScrollController list12Controller = ScrollController();
+  final ScrollController list13Controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Scrollbar(
-              isAlwaysShown: _isAlwaysShown,
-              showTrackOnHover: _showTrackOnHover,
-              child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, index) => MyItem(index),
-              ),
-            ),
-          ),
-          Divider(height: 1),
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [],
-                ),
-              ),
-            ),
-          )
-        ],
+      appBar: AppBar(title: Text('Student List')),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .where('rool', isEqualTo: 'Student')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No students found.'));
+          }
+
+          // Process the list of documents
+          final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (context, index) {
+              // Access fields of the document
+              final Map<String, dynamic> data =
+                  documents[index].data() as Map<String, dynamic>;
+              final String name = data['name'];
+              final String roll = data['rool'];
+
+              // Display the student information
+              return ListTile(
+                title: Text(name),
+                subtitle: Text(roll),
+              );
+            },
+          );
+        },
       ),
-    );
-  }
-}
-
-class MyItem extends StatelessWidget {
-  final int index;
-
-  const MyItem(this.index);
-
-  @override
-  Widget build(BuildContext context) {
-    final color = Colors.primaries[index % Colors.primaries.length];
-    final hexRgb = color.shade500.toString().substring(10, 16).toUpperCase();
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      leading: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            color: color,
-          )),
-      title: Text('Material Color #${index + 1}'),
-      subtitle: Text('#$hexRgb'),
     );
   }
 }

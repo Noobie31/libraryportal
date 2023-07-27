@@ -9,6 +9,20 @@ class Libbook extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<Libbook> {
+  final ScrollController list1Controller = ScrollController();
+  final ScrollController list2Controller = ScrollController();
+  final ScrollController list3Controller = ScrollController();
+  final ScrollController list4Controller = ScrollController();
+  final ScrollController list5Controller = ScrollController();
+  final ScrollController list6Controller = ScrollController();
+  final ScrollController list7Controller = ScrollController();
+  final ScrollController list8Controller = ScrollController();
+  final ScrollController list9Controller = ScrollController();
+  final ScrollController list10Controller = ScrollController();
+  final ScrollController list11Controller = ScrollController();
+  final ScrollController list12Controller = ScrollController();
+  final ScrollController list13Controller = ScrollController();
+
   bool _isAlwaysShown = true;
 
   bool _showTrackOnHover = false;
@@ -24,7 +38,7 @@ class _MyHomePageState extends State<Libbook> {
               isAlwaysShown: _isAlwaysShown,
               showTrackOnHover: _showTrackOnHover,
               child: ListView.builder(
-                itemCount: 20,
+                itemCount: 10,
                 itemBuilder: (context, index) => MyItem(index),
               ),
             ),
