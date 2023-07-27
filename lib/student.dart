@@ -4,16 +4,35 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 
 class Student extends StatefulWidget {
-  const Student({super.key});
+  const Student({Key? key}) : super(key: key);
 
   @override
   State<Student> createState() => _StudentState();
 }
 
 class _StudentState extends State<Student> {
+  String? userName;
+  String? userEmail;
+
   @override
-  Widget build(BuildContext context,
-      {double fontSize = 20.0, FontWeight fontWeight = FontWeight.normal}) {
+  void initState() {
+    super.initState();
+    getProfile();
+  }
+
+  Future<void> getProfile() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    if (user != null) {
+      setState(() {
+        userEmail = user.email;
+        userName = user.displayName;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Student"),
@@ -21,7 +40,7 @@ class _StudentState extends State<Student> {
         actions: [
           IconButton(
             onPressed: () {
-              logout(context);
+              logout(context); // Call logout function on logout button press
             },
             icon: Icon(
               Icons.logout,
@@ -31,7 +50,7 @@ class _StudentState extends State<Student> {
       ),
       backgroundColor: Color.fromARGB(255, 32, 32, 32),
       body: Container(
-        alignment: Alignment.topLeft, // Aligns the text in the top-left corner
+        alignment: Alignment.topLeft,
         height: 250,
         margin: EdgeInsets.only(top: 10),
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -43,26 +62,43 @@ class _StudentState extends State<Student> {
             width: 1,
           ),
         ),
-        child: Text(
-          "WELCOME",
-          style: TextStyle(
-              fontSize: 40,
-              fontFamily: 'Roboto',
-              fontWeight: fontWeight,
-              color: Colors.white),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Welcome",
+              style: TextStyle(
+                fontSize: 40,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(
+                height: 10), // Add some spacing between the two Text widgets
+            Text(
+              userName ?? 'User Name Not Available',
+              style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-}
 
-Future<void> logout(BuildContext context) async {
-  CircularProgressIndicator();
-  await FirebaseAuth.instance.signOut();
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => LoginPage(),
-    ),
-  );
+  // Function to handle logout
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
+  }
 }

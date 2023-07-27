@@ -2,26 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Libstudent extends StatefulWidget {
-  const Libstudent({super.key});
+  const Libstudent({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LibstudentState createState() => _LibstudentState();
 }
 
-class _MyHomePageState extends State<Libstudent> {
-  final ScrollController list1Controller = ScrollController();
-  final ScrollController list2Controller = ScrollController();
-  final ScrollController list3Controller = ScrollController();
-  final ScrollController list4Controller = ScrollController();
-  final ScrollController list5Controller = ScrollController();
-  final ScrollController list6Controller = ScrollController();
-  final ScrollController list7Controller = ScrollController();
-  final ScrollController list8Controller = ScrollController();
-  final ScrollController list9Controller = ScrollController();
-  final ScrollController list10Controller = ScrollController();
-  final ScrollController list11Controller = ScrollController();
-  final ScrollController list12Controller = ScrollController();
-  final ScrollController list13Controller = ScrollController();
+class _LibstudentState extends State<Libstudent> {
+  final ScrollController listController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +33,8 @@ class _MyHomePageState extends State<Libstudent> {
           final List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
 
           return ListView.builder(
+            controller:
+                listController, // Use the single controller for ListView
             itemCount: documents.length,
             itemBuilder: (context, index) {
               // Access fields of the document
@@ -56,7 +46,6 @@ class _MyHomePageState extends State<Libstudent> {
               // Display the student information
               return ListTile(
                 title: Text(name),
-                subtitle: Text(roll),
               );
             },
           );

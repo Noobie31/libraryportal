@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 class Libbook extends StatefulWidget {
   const Libbook({super.key});
   @override
@@ -11,6 +13,9 @@ class _LibbookState extends State<Libbook> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: GoogleFonts.lato().fontFamily,
+      ),
       home: MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
@@ -23,6 +28,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _bookNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
   void _showFloatingDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -35,13 +43,16 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
+                  controller: _bookNameController,
                   decoration: InputDecoration(
                     labelText: "Book Name",
                   ),
                 ),
                 SizedBox(
-                    height: 16), // Add some spacing between the text fields
+                  height: 16,
+                ), // Add some spacing between the text fields
                 TextField(
+                  controller: _descriptionController,
                   decoration: InputDecoration(
                     labelText: "Description",
                   ),
@@ -50,6 +61,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           actions: [
+            ElevatedButton(
+              onPressed: () async {
+                // Save the book name and description to Firestore
+                String bookName = _bookNameController.text;
+                String description = _descriptionController.text;
+                String Nakki =
+                    "New Book"; // You can set this to "true" if the book is nakki.
+
+                // Add the data to Firestore
+                await FirebaseFirestore.instance.collection('books').add({
+                  'name': bookName,
+                  'description': description,
+                  'nakki': Nakki,
+                });
+
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: Text("ADD"),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -66,7 +97,25 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Book List"),
+        title: Row(children: <Widget>[
+          Text(
+            'Book List',
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w200,
+                fontFamily: GoogleFonts.lato().fontFamily,
+                fontSize: 20),
+          ),
+          SizedBox(width: 180),
+          Text(
+            "Pre owned by",
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w200,
+                fontFamily: GoogleFonts.lato().fontFamily,
+                fontSize: 10),
+          ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -95,13 +144,13 @@ class _MyHomePageState extends State<MyHomePage> {
               final Map<String, dynamic> data =
                   documents[index].data() as Map<String, dynamic>;
               final String name = data['name'];
-              // final String author = data['author'];
-              // final int year = data['year'];
+              final String Nakki =
+                  data['nakki']; // Get the value of 'nakki' field
 
               // Display the book information
               return ListTile(
                 title: Text(name),
-                // subtitle: Text('Author: $author, Year: $year'),
+                trailing: Text(Nakki),
               );
             },
           );
