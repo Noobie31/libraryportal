@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'login.dart';
 
@@ -24,9 +25,17 @@ class _StudentState extends State<Student> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     if (user != null) {
+      // Assuming you are using Firestore as your database
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final DocumentSnapshot snapshot =
+          await firestore.collection('users').doc(user.uid).get();
+
+      // Assuming the username is stored in the 'name' field of the document
+      final String? username = snapshot.get('name');
+
       setState(() {
         userEmail = user.email;
-        userName = user.displayName;
+        userName = username;
       });
     }
   }
