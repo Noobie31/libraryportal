@@ -53,10 +53,10 @@ class _RegisterState extends State<Register> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 80,
                         ),
-                        Text(
+                        const Text(
                           "Register",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -64,10 +64,10 @@ class _RegisterState extends State<Register> {
                             fontSize: 40,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         TextFormField(
@@ -98,7 +98,7 @@ class _RegisterState extends State<Register> {
                           onChanged: (value) {},
                           keyboardType: TextInputType.name,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
@@ -219,13 +219,13 @@ class _RegisterState extends State<Register> {
                           },
                           onChanged: (value) {},
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Role : ",
                               style: TextStyle(
                                 fontSize: 20,
@@ -244,7 +244,7 @@ class _RegisterState extends State<Register> {
                                   value: dropDownStringItem,
                                   child: Text(
                                     dropDownStringItem,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -262,7 +262,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -270,7 +270,7 @@ class _RegisterState extends State<Register> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             MaterialButton(
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0))),
                               elevation: 5.0,
@@ -314,16 +314,19 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  postDetailsToFirestore(String email, String rool) async {
+  void postDetailsToFirestore(String email, String rool) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(user!.uid).set({
       'email': emailController.text,
       'rool': rool,
-      'name': nameController.text
+      'name': nameController.text,
+      'booksy': [], // Initialize 'booksy' as an empty list for the new student
     });
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Admin()));
+      context,
+      MaterialPageRoute(builder: (context) => Admin()),
+    );
   }
 }

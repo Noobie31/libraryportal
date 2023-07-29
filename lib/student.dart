@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 import 'login.dart';
 
@@ -25,12 +26,9 @@ class _StudentState extends State<Student> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     if (user != null) {
-      // Assuming you are using Firestore as your database
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final DocumentSnapshot snapshot =
           await firestore.collection('users').doc(user.uid).get();
-
-      // Assuming the username is stored in the 'name' field of the document
       final String? username = snapshot.get('name');
 
       setState(() {
@@ -45,11 +43,11 @@ class _StudentState extends State<Student> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Student"),
-        backgroundColor: Color.fromARGB(255, 44, 44, 44),
+        backgroundColor: Colors.deepPurple,
         actions: [
           IconButton(
             onPressed: () {
-              logout(context); // Call logout function on logout button press
+              logout(context);
             },
             icon: Icon(
               Icons.logout,
@@ -57,61 +55,104 @@ class _StudentState extends State<Student> {
           )
         ],
       ),
-      backgroundColor: Color.fromARGB(255, 32, 32, 32),
+      backgroundColor: Colors.grey.shade200,
       body: Container(
-        alignment: Alignment.topLeft,
-        height: 250,
-        margin: EdgeInsets.only(top: 10),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Color.fromARGB(255, 1, 77, 87),
-          border: Border.all(
-            color: Color.fromARGB(255, 130, 197, 206),
-            width: 1,
-          ),
-        ),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 20),
             Text(
-              "Welcome",
+              "Welcome,",
               style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
             ),
-            SizedBox(
-                height: 10), // Add some spacing between the two Text widgets
+            SizedBox(height: 8),
             Text(
               userName ?? 'User Name Not Available',
               style: TextStyle(
-                fontSize: 30,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
             ),
-            SizedBox(height: 73),
-            Text(
-              "The Great Gatsby                        Due 2 days more...",
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 5),
-            Text(
-              "The Catcher in the Rye              Due 4 days more...",
-              style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
+            SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your Books",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Expanded(
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser?.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (!snapshot.hasData) {
+                            return Center(child: Text('No data found.'));
+                          }
+
+                          final Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          final List<dynamic> booksy = data['booksy'];
+
+                          if (booksy.isEmpty) {
+                            return Center(child: Text('No books found.'));
+                          }
+
+                          return ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                              color: Colors.deepPurple,
+                              height: 1,
+                            ),
+                            itemCount: booksy.length,
+                            itemBuilder: (context, index) {
+                              final randomDueDays = Random().nextInt(10) + 1;
+                              return ListTile(
+                                title: Text(
+                                  booksy[index],
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.deepPurple,
+                                  ),
+                                ),
+                                trailing: Text(
+                                  'Due in $randomDueDays day${randomDueDays == 1 ? '' : 's'}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.deepPurple,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -120,7 +161,6 @@ class _StudentState extends State<Student> {
     );
   }
 
-  // Function to handle logout
   Future<void> logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(

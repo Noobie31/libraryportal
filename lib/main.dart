@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:libraryportal/admin.dart';
 import 'package:libraryportal/librarian.dart';
+import 'package:libraryportal/libstudent.dart';
 import 'package:libraryportal/register.dart';
 import 'package:libraryportal/student.dart';
 
